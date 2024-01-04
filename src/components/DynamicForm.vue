@@ -1,64 +1,65 @@
-<script setup>
-const schema = {
-  fields: [
-    {
-      label: 'Full Name',
-      type: 'text',
-      model: 'fullName',
-      placeholder: 'John Doe',
-      required: true,
-      minLength: 2,
-      maxLength: 50
-    },
-    {
-      label: 'Email Address',
-      type: 'email',
-      placeholder: 'john@example.com',
-      required: true
-    },
-    {
-      label: 'Subscribe to Newsletter',
-      type: 'checkbox',
-      description: 'Receive updates and special offers'
-    },
-    {
-      label: 'Select Country',
-      type: 'select',
-      required: true,
-      options: [
-        {
-          label: 'United States',
-          value: 'USA'
-        },
-        {
-          label: 'Canada',
-          value: 'Canada'
-        },
-        {
-          label: 'United Kingdom',
-          value: 'UK'
-        },
-        {
-          label: 'Australia',
-          value: 'Australia'
-        }
-      ]
-    },
-    {
-      label: 'Terms and Conditions',
-      type: 'checkbox',
-      required: true,
-      description: 'I accept the terms and conditions'
-    }
-  ]
-};
+<script async setup>
+const getSchema = async () => {
+try {
+  const response = await fetch('https://raw.githubusercontent.com/Huc91/test-sbp/master/formData.json');
 
+  const jsonFormData = await response.json();
+  console.log('JSON data:', jsonFormData);
+  return jsonFormData;
+} catch (error) {
+  console.error('Error fetching data:', error.message);
+  return null;
+}
+}
+
+const formSchema = await getSchema();
 const userInput = defineModel('')
+
+const isFormValid = (() => {
+  return false;
+});
+
+const submitForm = () => {
+  if (isFormValid) {
+    console.log('Form Data:', formSchema);
+  } else {
+    console.log('Form validation failed');
+  }
+};
 
 </script>
 
 <template>
-  <form>
+  <form @submit.prevent="submitForm" class="dynamic-form">
+        <div v-for="(field, i) in formSchema.fields" :key="field.label + i" class="dynamic-form__field">
+        <label>{{ field.label }}</label>
+        <template v-if="field.type === 'text'">
+          <InputText
+            :placeholder="field.placeholder"
+            :required="field.required"
+            :minlength="field.minLength"
+            :maxlength="field.maxLength"
+          />
+        </template>
+        <template v-else-if="field.type === 'email'">
+          <InputText
+            :placeholder="field.placeholder"
+            :required="field.required"
+          />
+        </template>
+        <template v-else-if="field.type === 'checkbox'">
+          <Checkbox
+            :label="field.label"
+            :required="field.required"
+          />
+        </template>
+        <template v-else-if="field.type === 'select'">
+          <Dropdown
+            :options="field.options"
+            :required="field.required"
+          />
+        </template>
+      </div>
     <input v-model="userInput" type="input" />
     <p>{{ userInput }}</p>
   </form>
