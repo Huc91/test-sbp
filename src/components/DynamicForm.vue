@@ -1,0 +1,65 @@
+<script setup>
+const schema = {
+  fields: [
+    {
+      label: 'Full Name',
+      type: 'text',
+      model: 'fullName',
+      placeholder: 'John Doe',
+      required: true,
+      minLength: 2,
+      maxLength: 50
+    },
+    {
+      label: 'Email Address',
+      type: 'email',
+      placeholder: 'john@example.com',
+      required: true
+    },
+    {
+      label: 'Subscribe to Newsletter',
+      type: 'checkbox',
+      description: 'Receive updates and special offers'
+    },
+    {
+      label: 'Select Country',
+      type: 'select',
+      required: true,
+      options: [
+        {
+          label: 'United States',
+          value: 'USA'
+        },
+        {
+          label: 'Canada',
+          value: 'Canada'
+        },
+        {
+          label: 'United Kingdom',
+          value: 'UK'
+        },
+        {
+          label: 'Australia',
+          value: 'Australia'
+        }
+      ]
+    },
+    {
+      label: 'Terms and Conditions',
+      type: 'checkbox',
+      required: true,
+      description: 'I accept the terms and conditions'
+    }
+  ]
+};
+
+const userInput = defineModel('')
+
+</script>
+
+<template>
+  <form>
+    <input v-model="userInput" type="input" />
+    <p>{{ userInput }}</p>
+  </form>
+</template>
