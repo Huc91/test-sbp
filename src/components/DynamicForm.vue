@@ -37,7 +37,7 @@ const submitForm = () => {
 <template>
   <form @submit.prevent="submitForm" class="dynamic-form">
     <div v-for="(field, i) in formSchema.fields" :key="field.label + i" class="dynamic-form__field">
-      <label>{{ field.label }}</label>
+      <label>{{ `${field.label}${field.required ? '*' : ''}` }}</label>
       <template v-if="field.type === 'text'">
         <InputText
           v-model="formData[field.model]"
@@ -57,6 +57,7 @@ const submitForm = () => {
         <Dropdown v-model="formData[field.model]" :placeholder="field.placeholder" :options="field.options" optionLabel="label" :required="field.required" />
       </template>
     </div>
+    <Button label="Submit" @click="submitForm"/>
   </form>
 </template>
 
