@@ -13,7 +13,7 @@
       "label": "Email Address",
       "type": "email",
       "model": "email",
-      "placeholder": "john@example.com",
+      "placeholder": "johnny@example.com",
       "required": true
     },
     {
