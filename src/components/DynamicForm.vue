@@ -51,13 +51,20 @@ const submitForm = () => {
         <InputText v-model="formData[field.model]" :placeholder="field.placeholder" :required="field.required" />
       </template>
       <template v-else-if="field.type === 'checkbox'">
-        <Checkbox :label="field.label" :required="field.required" />
+        <Checkbox  v-model="formData[field.model]" :label="field.label" :required="field.required" binary/>
       </template>
       <template v-else-if="field.type === 'select'">
-        <Dropdown :options="field.options" :required="field.required" />
+        <Dropdown v-model="formData[field.model]" :placeholder="field.placeholder" :options="field.options" optionLabel="label" :required="field.required" />
       </template>
     </div>
-    <input v-model="userInput" type="input" />
-    <p>{{ userInput }}</p>
   </form>
 </template>
+
+<style lang="css" scoped>
+  .dynamic-form__field {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+</style>
