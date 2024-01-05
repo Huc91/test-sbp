@@ -1,5 +1,5 @@
 <script async setup>
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
 
 const getSchema = async () => {
   try {
@@ -20,13 +20,59 @@ const getSchema = async () => {
 const formSchema = await getSchema()
 
 const formData = reactive({});
+const formError = reactive({});
 
-const isFormValid = () => {
-  return false
+const rules = computed(() => {
+  const rules = [];
+  formSchema.fields.forEach( field => {
+    const fieldRules = { model: field.model, rules: {} };
+    if(Object.hasOwn(field, 'required'))
+      fieldRules.rules.required = field.required
+    if (Object.hasOwn(field, 'minLength'))
+      fieldRules.rules.minLength = field.minLength
+    if (Object.hasOwn(field, 'maxLength'))
+      fieldRules.rules.maxLength = field.maxLength
+    if (Object.hasOwn(field, 'type') && field.type === 'email')
+      fieldRules.rules.isEmail = true
+    if(fieldRules.rules)
+      rules.push(fieldRules)
+  })
+  return rules
+})
+
+const validateForm = (form, rules) => {
+    const errors = [];
+    rules.forEach(field => {
+      const data = form[field.model]
+      formError[field.model] = checkRules(data, field.rules)
+      if(checkRules(data, field.rules) !== false)
+        errors.push(true);
+    })
+    if(errors.length)
+      return false;
+    return true;
+  }
+
+const checkRules = (data, rules) => {
+  if(rules.required)
+    if(!data)
+      return 'Required field'
+  if(rules.minLength)
+    if(data < rules.minLength)
+      return `Min ${rules.minLength} characters`
+  if (rules.maxLength)
+    if (data > rules.maxLength)
+      return `Max ${rules.maxLength} charaters`
+  if (rules.isEmail) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data))
+      return `Insert a valid email addres`
+  }
+  return false;
 }
 
 const submitForm = () => {
-  if (isFormValid) {
+  if (validateForm(formData, rules.value)) {
     console.log('Form Data:', formSchema)
   } else {
     console.log('Form validation failed')
@@ -56,6 +102,7 @@ const submitForm = () => {
       <template v-else-if="field.type === 'select'">
         <Dropdown v-model="formData[field.model]" :placeholder="field.placeholder" :options="field.options" optionLabel="label" :required="field.required" />
       </template>
+      <p v-if="formError && formError[field.model]">{{ formError[field.model] }}</p>
     </div>
     <Button label="Submit" @click="submitForm"/>
   </form>
