@@ -1,6 +1,6 @@
 <script async setup>
 //Imports
-import { reactive, computed, defineProps, defineEmits } from 'vue'
+import { reactive, computed } from 'vue'
 
 //Props
 const props = defineProps({
