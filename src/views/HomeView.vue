@@ -24,6 +24,8 @@ const getSchema = async () => {
 const sendData = (event) => {
     if (isProxy(event)) {
         const data = toRaw(event)
+        // Maybe the Back end want's to have a default value if the user leaves it blank.
+        if (!data.newsletter) data.newsletter = false
         console.log('form data -->', data)
         //Send request to BE
 
