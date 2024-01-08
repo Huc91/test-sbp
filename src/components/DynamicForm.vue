@@ -28,10 +28,14 @@ const rules = computed(() => {
     const rules = []
     formSchema.fields.forEach((field) => {
         const fieldRules = { model: field.model, rules: {} }
-        if (Object.hasOwn(field, 'required')) fieldRules.rules.required = field.required
-        if (Object.hasOwn(field, 'minLength')) fieldRules.rules.minLength = field.minLength
-        if (Object.hasOwn(field, 'maxLength')) fieldRules.rules.maxLength = field.maxLength
-        if (Object.hasOwn(field, 'type') && field.type === 'email') fieldRules.rules.isEmail = true
+        if (Object.hasOwn(field, 'required'))
+            fieldRules.rules.required = field.required
+        if (Object.hasOwn(field, 'minLength'))
+            fieldRules.rules.minLength = field.minLength
+        if (Object.hasOwn(field, 'maxLength'))
+            fieldRules.rules.maxLength = field.maxLength
+        if (Object.hasOwn(field, 'type') && field.type === 'email')
+            fieldRules.rules.isEmail = true
         if (fieldRules.rules) rules.push(fieldRules)
     })
     return rules
@@ -52,9 +56,11 @@ const validateForm = (form, rules) => {
 const checkRules = (data, rules) => {
     if (rules.required) if (!data) return 'Required field'
     if (rules.minLength && typeof data === 'string')
-        if (data.length < rules.minLength) return `Min ${rules.minLength} characters`
+        if (data.length < rules.minLength)
+            return `Min ${rules.minLength} characters`
     if (rules.maxLength && typeof data === 'string')
-        if (data.length > rules.maxLength) return `Max ${rules.maxLength} charaters`
+        if (data.length > rules.maxLength)
+            return `Max ${rules.maxLength} charaters`
     if (rules.isEmail) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
         if (!emailRegex.test(data)) return `Insert a valid email addres`
@@ -74,7 +80,11 @@ const submitForm = () => {
 
 <template>
     <form @submit.prevent="submitForm" class="dynamic-form">
-        <div v-for="(field, i) in formSchema.fields" :key="field.label + i" class="dynamic-form__field">
+        <div
+            v-for="(field, i) in formSchema.fields"
+            :key="field.label + i"
+            class="dynamic-form__field"
+        >
             <label>{{ `${field.label}${field.required ? '*' : ''}` }}</label>
             <template v-if="field.type === 'text'">
                 <InputText
@@ -94,8 +104,17 @@ const submitForm = () => {
             </template>
             <template v-else-if="field.type === 'checkbox'">
                 <div class="checkbox__container">
-                    <Checkbox v-model="formData[field.model]" :label="field.label" :required="field.required" binary />
-                    <p v-if="field.description" class="checkbox__description" v-text="field.description" />
+                    <Checkbox
+                        v-model="formData[field.model]"
+                        :label="field.label"
+                        :required="field.required"
+                        binary
+                    />
+                    <p
+                        v-if="field.description"
+                        class="checkbox__description"
+                        v-text="field.description"
+                    />
                 </div>
             </template>
             <template v-else-if="field.type === 'select'">
@@ -107,7 +126,11 @@ const submitForm = () => {
                     :required="field.required"
                 />
             </template>
-            <p v-if="formError && formError[field.model]" class="dynamic-form__error" v-text="formError[field.model]" />
+            <p
+                v-if="formError && formError[field.model]"
+                class="dynamic-form__error"
+                v-text="formError[field.model]"
+            />
         </div>
         <Button :label="submitText" @click="submitForm" />
     </form>
