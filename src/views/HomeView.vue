@@ -26,6 +26,10 @@ const sendData = (event) => {
         const data = toRaw(event)
         console.log('form data -->', data)
         //Send request to BE
+
+        // if(!data.newsletter)
+        //   data.newsletter = false
+
         // try {
         //   const response = await fetch('backend_url', {
         //     method: 'POST',
