@@ -57,11 +57,11 @@ const checkRules = (data, rules) => {
   if(rules.required)
     if(!data)
       return 'Required field'
-  if(rules.minLength)
-    if(data < rules.minLength)
+  if(rules.minLength && typeof data === 'string')
+    if(data.length < rules.minLength)
       return `Min ${rules.minLength} characters`
-  if (rules.maxLength)
-    if (data > rules.maxLength)
+  if (rules.maxLength && typeof data === 'string')
+    if (data.length > rules.maxLength)
       return `Max ${rules.maxLength} charaters`
   if (rules.isEmail) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -97,22 +97,42 @@ const submitForm = () => {
         <InputText v-model="formData[field.model]" :placeholder="field.placeholder" :required="field.required" />
       </template>
       <template v-else-if="field.type === 'checkbox'">
-        <Checkbox  v-model="formData[field.model]" :label="field.label" :required="field.required" binary/>
+        <div class="checkbox__container">
+          <Checkbox  v-model="formData[field.model]" :label="field.label" :required="field.required" binary/>
+          <p v-if="field.description" class="checkbox__description" v-text="field.description"/>
+        </div>
       </template>
       <template v-else-if="field.type === 'select'">
         <Dropdown v-model="formData[field.model]" :placeholder="field.placeholder" :options="field.options" optionLabel="label" :required="field.required" />
       </template>
-      <p v-if="formError && formError[field.model]">{{ formError[field.model] }}</p>
+      <p v-if="formError && formError[field.model]" class="dynamic-form__error" v-text="formError[field.model]"/>
     </div>
     <Button label="Submit" @click="submitForm"/>
   </form>
 </template>
 
-<style lang="css" scoped>
-  .dynamic-form__field {
-    display: flex;
-    flex-direction: column;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+<style lang="scss" scoped>
+  .dynamic-form {
+    &__field {
+      display: flex;
+      flex-direction: column;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+    &__error {
+      color: #ff0000
+    }
+  }
+
+  .checkbox {
+    &__container {
+      display: flex;
+      flex-direction: row;
+    }
+    &__description {
+      display: block;
+      margin-left: .5rem;
+      color: #4c4c4c
+    }
   }
 </style>
