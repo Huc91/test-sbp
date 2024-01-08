@@ -51,7 +51,7 @@ npm run lint
 4. Added the store
 - I handled the error validation myself no libraries
 - Added a small unit test with vitest for the component (run out of time so it's the bare minimum to be acceptable)
-- Not required fields: if a field is not required and the Backend need it to a default value, I can set a default value and send it. I do it in the part where I handle the emit of the submit.
+- Not required and not filled fields: if a field is not required, the user doesn't insert anything but the backend need it to a default value, I can set a default value and send it. I do it in the part where I handle the emit of the submit. In an improved version I would add a `defaultValue` key in the fields schema.
 
 ## Feedback
 
