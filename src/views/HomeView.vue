@@ -24,7 +24,7 @@ const getSchema = async () => {
 const sendData = (event) => {
     if (isProxy(event)) {
         const data = toRaw(event)
-        console.log(data)
+        console.log('form data -->', data)
         //Send request to BE
         // try {
         //   const response = await fetch('backend_url', {

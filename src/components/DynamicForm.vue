@@ -70,7 +70,6 @@ const checkRules = (data, rules) => {
 
 const submitForm = () => {
     if (validateForm(formData, rules.value)) {
-        console.log('Form Data:', formData)
         emit('submit', formData)
     } else {
         console.log('Form validation failed')
