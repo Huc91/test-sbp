@@ -82,10 +82,12 @@ const submitForm = () => {
     <form @submit.prevent="submitForm" class="dynamic-form">
         <div
             v-for="(field, i) in formSchema.fields"
-            :key="field.label + i"
+            :key="`${field.model}-${i}`"
             class="dynamic-form__field"
         >
-            <label>{{ `${field.label}${field.required ? '*' : ''}` }}</label>
+            <label :for="`${field.model}-${i}`">
+                {{ `${field.label}${field.required ? '*' : ''}` }}
+            </label>
             <template v-if="field.type === 'text'">
                 <InputText
                     v-model="formData[field.model]"
@@ -93,6 +95,10 @@ const submitForm = () => {
                     :required="field.required"
                     :minlength="field.minLength"
                     :maxlength="field.maxLength"
+                    :id="`${field.model}-${i}`"
+                    :class="{
+                        'p-invalid': formError && formError[field.model],
+                    }"
                 />
             </template>
             <template v-else-if="field.type === 'email'">
@@ -100,6 +106,10 @@ const submitForm = () => {
                     v-model="formData[field.model]"
                     :placeholder="field.placeholder"
                     :required="field.required"
+                    :class="{
+                        'p-invalid': formError && formError[field.model],
+                    }"
+                    type="email"
                 />
             </template>
             <template v-else-if="field.type === 'checkbox'">
@@ -109,6 +119,9 @@ const submitForm = () => {
                         :label="field.label"
                         :required="field.required"
                         binary
+                        :class="{
+                            'p-invalid': formError && formError[field.model],
+                        }"
                     />
                     <p
                         v-if="field.description"
@@ -124,6 +137,9 @@ const submitForm = () => {
                     :options="field.options"
                     optionLabel="label"
                     :required="field.required"
+                    :class="{
+                        'p-invalid': formError && formError[field.model],
+                    }"
                 />
             </template>
             <p
