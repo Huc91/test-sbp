@@ -37,6 +37,8 @@ npm run test:unit
 ```sh
 npm run lint
 ```
+## Live Demo
+[Check the live demo on Netlify](https://incomparable-selkie-bed6c6.netlify.app/)
 
 ## About the implementation
 
