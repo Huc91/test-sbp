@@ -40,14 +40,15 @@ npm run lint
 
 ## About the implementation
 
--   I create a dynamic form builder based on an object of schema of the fields as input.
--   I wanted to represent the case that the schema is took from a back-end api, but given that the component must take a prop for the schema you can also hardcode it.
--   I spent some time on the scaffolding to make this project ready to expand on:
--   I installed SASS
--   PrimeVueResolver for not having to "write" everytime to import the design system components where you need it. They're not globally imported, it's just a way for the developer to not spend time to write the import snippe every time.
--   Added the router
--   Added the store
--   I handled the error validation myself no libraries
+- I create a dynamic form builder based on an object of schema of the fields as input.
+- I wanted to represent the case that the schema is took from a back-end api, but given that the component must take a prop for the schema you can also hardcode it.
+- I spent some time on the scaffolding to make this project ready to expand on:
+1. I installed SASS
+2. PrimeVueResolver for not having to "write" everytime to import the design system components where you need it. They're not globally imported, it's just a way for the developer to not spend time to write the import snippe every time.
+3. Added the router
+4. Added the store
+- I handled the error validation myself no libraries
+- Added a small unit test with vitest for the component (run out of time so it's the bare minimum to be acceptable)
 
 ## Feedback
 
